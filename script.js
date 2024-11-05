@@ -359,11 +359,16 @@ window.onload = () => {
 };
 // Initialize the animations and trigger them when page loads
 function init() {
-    gsap.set(stage, { autoAlpha: 1 }); // Ensure the stage is visible
+    gsap.set(stage, { autoAlpha: 1 });
     initHeader();
     initIntro();
-    initSlides();
     initLinks();
+    initSlides();
+    initParallax();
+    initKeys();
 }
 
-window.onload = init;
+window.onload = () => {
+    init();
+};
+
