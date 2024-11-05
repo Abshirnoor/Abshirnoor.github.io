@@ -1,3 +1,19 @@
+function splitText(element, type) {
+    const elements = document.querySelectorAll(element);
+    elements.forEach(el => {
+        const text = el.textContent;
+        el.innerHTML = text.split("").map(char => {
+            if (type === "chars") return `<span class="char">${char}</span>`;
+            if (type === "lines") return `<span class="line">${char}</span>`;
+            return char;
+        }).join("");
+    });
+}
+
+// Apply split only to specific elements
+splitText('.intro__title', "lines"); // For the intro title lines
+splitText('.col__content-title', "chars"); // For the column content titles' characters
+
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(ScrollToPlugin);
 
