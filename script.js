@@ -1,6 +1,5 @@
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(ScrollToPlugin);
-gsap.registerPlugin(SplitText);
 
 console.clear();
 
@@ -11,14 +10,26 @@ const stage = select('.stage');
 const slides = selectAll(".slide");
 const links = selectAll(".slide__scroll-link");
 const titles = selectAll('.col__content-title');
-const introTitle = new SplitText('.intro__title', {type: "lines", linesClass: "intro-line"});
-const splitTitles = new SplitText(titles, {type: "lines, chars", linesClass: "line", charsClass: "char", position: "relative" });
+
+// Function to split text into spans for lines and characters
+function splitText(element, type) {
+    const elements = document.querySelectorAll(element);
+    elements.forEach(el => {
+        const text = el.textContent;
+        el.innerHTML = text.split("").map(char => {
+            if (type === "chars") return `<span class="char">${char}</span>`;
+            if (type === "lines") return `<span class="line">${char}</span>`;
+            return char;
+        }).join("");
+    });
+}
+
+splitText('.intro__title', "lines"); // For intro lines
+splitText('.col__content-title', "chars"); // For title characters
+
 let slideID = 0;
 
 function initHeader() {
-    
-    // animate the logo and fake burger button into place
-    
     let tl = gsap.timeline({delay: 0.5});
     
     tl.from('.logo', {
@@ -40,13 +51,11 @@ function initHeader() {
         duration: 0.4,
         ease: 'power2',
         stagger: 0.1
-    }, "-=0.6")
-    
-    // create mouse animations for the faux burger button
+    }, "-=0.6");
     
     let navBtn = select('.nav-btn');
     
-    navBtn.addEventListener("mouseover", (e) => {
+    navBtn.addEventListener("mouseover", () => {
         gsap.to('.nav-rect', {
             scaleX: 1,
             transformOrigin: "top left",
@@ -55,7 +64,7 @@ function initHeader() {
         });
     });
     
-    navBtn.addEventListener("mouseout", (e) => {
+    navBtn.addEventListener("mouseout", () => {
         gsap.to('.nav-rect', {
             scaleX: 0.8,
             transformOrigin: "top left",
@@ -66,13 +75,9 @@ function initHeader() {
 }
 
 function initIntro() {
-    
-    // animate the intro elements into place
-    
     let tl = gsap.timeline({delay: 1.2});
     
     tl.from('.intro-line', {
-        // x: 100,
         y: 400,
         ease: 'power4',
         duration: 3
@@ -84,27 +89,23 @@ function initIntro() {
         duration: 3
     }, 0.7)
     .from('.intro__img--1', {
-        // x: -50,
         y: 50,
         opacity: 0,
         ease: 'power2',
         duration: 10
     }, 1)
     .from('.intro__img--2', {
-        // x: 50,
         y: -50,
         opacity: 0,
         ease: 'power2',
         duration: 10
     }, 1);
     
-    // set up scrollTrigger animation for the when the intro scrolls out
-    
     let stl = gsap.timeline({
         scrollTrigger: {
             trigger: '.intro',
             scrub: 1,
-            start: "top bottom", // position of trigger meets the scroller position
+            start: "top bottom",
             end: "bottom top"
         }
     });
@@ -113,7 +114,6 @@ function initIntro() {
         x: 400,
         ease: 'power4.in',
         duration: 3,
-        
     })
     .to('.intro__txt', {
         y: 100,
@@ -123,11 +123,7 @@ function initIntro() {
 }
 
 function initLinks() {
-    
-    // ScrollToPlugin links
-    
-    links.forEach((link, index, e) => {     
-        
+    links.forEach((link, index) => {     
         let linkST = link.querySelector('.slide__scroll-line');
         
         link.addEventListener("click", (e) => {
@@ -142,7 +138,7 @@ function initLinks() {
             slideID++;
         });
         
-        link.addEventListener("mouseover", (e) => {
+        link.addEventListener("mouseover", () => {
             gsap.to(linkST, {
                 y:40,
                 transformOrigin: "bottom center",
@@ -151,7 +147,7 @@ function initLinks() {
             });
         });
         
-        link.addEventListener("mouseout", (e) => {
+        link.addEventListener("mouseout", () => {
             gsap.to(linkST, {
                 y: 0,
                 transformOrigin: "bottom center",
@@ -159,10 +155,7 @@ function initLinks() {
                 ease: "power4"
             });
         });
-        
     });
-    
-    // ScrollToPlugin link back to the top
     
     let top = select('.footer__link-top');
     
@@ -171,7 +164,7 @@ function initLinks() {
         scrollTop();
     });
     
-    top.addEventListener("mouseover", (e) => {
+    top.addEventListener("mouseover", () => {
         gsap.to('.footer__link-top-line', {
             scaleY: 3,
             transformOrigin: "bottom center",
@@ -180,7 +173,7 @@ function initLinks() {
         });
     });
     
-    top.addEventListener("mouseout", (e) => {
+    top.addEventListener("mouseout", () => {
         gsap.to('.footer__link-top-line', {
             scaleY: 1,
             transformOrigin: "bottom center",
@@ -188,46 +181,14 @@ function initLinks() {
             ease: "power4"
         });
     });
-    
-    // Dummy slide links
-    
-    let slideLinks = selectAll('.slide-link');
-    
-    slideLinks.forEach((slideLink, index, e) => {
-        
-        let slideL = slideLink.querySelector('.slide-link__line');
-        
-        slideLink.addEventListener("mouseover", (e) => {
-            gsap.to(slideL, {
-                x: 20,
-                scaleX: 0.3,
-                transformOrigin: "right center",
-                duration: 0.8, 
-                ease: "power4"
-            });
-        });
-        slideLink.addEventListener("mouseout", (e) => {
-            gsap.to(slideL, {
-                x: 0,
-                scaleX: 1,
-                transformOrigin: "right center",
-                duration: 0.8, 
-                ease: "power4"
-            });
-        });
-    })
 }
 
 function initSlides() {
-    
-    // Animation of each slide scrolling into view
-    
-    slides.forEach((slide, i) => {   
-        
+    slides.forEach((slide) => {   
         let tl = gsap.timeline({
             scrollTrigger: {
                 trigger: slide,
-                start: "40% 50%", // position of trigger meets the scroller position
+                start: "40% 50%",
             }
         });
  
@@ -266,26 +227,23 @@ function initSlides() {
             transformOrigin: "bottom left",
             duration: 2.5, 
             ease: "elastic(1,0.5)"
-        }, 1.4)
-	});
-    
-    // External footer link scroll animation
+        }, 1.4);
+    });
     
     gsap.from('.footer__link', {
         scrollTrigger: {
             trigger: '.footer',
             scrub: 2,
-            start: "50% 100%", // position of trigger meets the scroller position
+            start: "50% 100%",
             end: "0% 0%",
         },
         y: "20vh",
         ease: 'sine'
-    })
+    });
 }
 
 function initParallax() {
-    
-    slides.forEach((slide, i) => {
+    slides.forEach((slide) => {
         let imageWrappers = slide.querySelectorAll('.col__image-wrap');
         
         gsap.fromTo(imageWrappers, {
@@ -295,15 +253,15 @@ function initParallax() {
             scrollTrigger: {
                 trigger: slide,
                 scrub: true,
-                start: "top bottom", // position of trigger meets the scroller position
+                start: "top bottom",
                 snap: {
-                    snapTo: 0.5, // 0.5 'cause the scroll animation range is 200vh for parallax effect
+                    snapTo: 0.5,
                     duration: 1,
                     ease: 'power4.inOut'
                 }
             },
             ease: 'none'
-        })
+        });
     });
 }
 
@@ -326,7 +284,7 @@ function scrollTop() {
 function initKeys() {
     document.addEventListener('keydown', (e) => {
         e.preventDefault();
-        if(event.keyCode == 40) { //down arrow to next slide
+        if(e.keyCode == 40) { 
             if(slideID <= slides.length) {
                 slideID++;
                 gsap.to(window, {
@@ -338,7 +296,7 @@ function initKeys() {
                 });
             }
         }
-        else if(event.keyCode == 38) { // up arrow to top
+        else if(e.keyCode == 38) { 
             slideID = 0;
             scrollTop();
         }
@@ -349,12 +307,12 @@ function init() {
     gsap.set(stage, { autoAlpha: 1 });
     initHeader();
     initIntro();
-	initLinks();
-	initSlides();
-	initParallax();
+    initLinks();
+    initSlides();
+    initParallax();
     initKeys();
 }
 
 window.onload = () => {
-	init();
+    init();
 };
