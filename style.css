@@ -1,3 +1,17 @@
+/* Added styles for line and char classes to replicate SplitText functionality */
+
+/* Each line should appear on a new line */
+.line {
+  display: block;
+  overflow: hidden; /* Prevents overflow during animations */
+}
+
+/* Each character animated individually */
+.char {
+  display: inline-block;
+  overflow: hidden; /* Prevents overflow during animations */
+}
+
 :root {
   --dark: #242423;
 }
