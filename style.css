@@ -2,26 +2,20 @@
   --dark: #242423;
 }
 
-html {
-  box-sizing: border-box;
-}
-
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
 html, body {
   min-height: 100vh;
-}
-
-body {
-  background-color: white;
+  margin: 0;
   font-family: "Noto Sans", sans-serif;
-  font-size: 14px;
   color: var(--dark);
-  line-height: 1.3;
+  background-color: white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 .logo,
@@ -33,31 +27,19 @@ h2 {
   font-weight: 400;
 }
 
-p {
-  margin: 0;
-}
-
 .stage {
   position: relative;
   background: white;
-  visibility: hidden;
+  visibility: hidden; /* Initially hidden; will be shown once GSAP animations are ready */
 }
 
-/*  ========================================================================== 
-    Nav Header
-    ========================================================================== */
+/* Header Styling */
 .header {
   position: fixed;
-  left: 40px;
   top: 24px;
+  left: 40px;
   z-index: 100;
   display: flex;
-}
-@media all and (max-width: 768px) {
-  .header {
-    display: block;
-    left: 24px;
-  }
 }
 
 .logo {
@@ -69,25 +51,27 @@ p {
 .nav-btn__svg {
   width: 56px;
   height: 30px;
+  margin-left: 56px;
 }
 
-.nav-btn {
-  display: block;
-  margin: -2px 0 0 56px;
+.nav-rect {
+  width: 40px;
+  height: 2px;
+  fill: var(--dark);
 }
-@media all and (max-width: 768px) {
+
+@media (max-width: 768px) {
+  .header {
+    display: block;
+    left: 24px;
+  }
+
   .nav-btn {
     margin: 18px 0 0 -6px;
   }
 }
 
-.nav-btn__svg {
-  pointer-events: none;
-}
-
-/*  ========================================================================== 
-    Intro
-    ========================================================================== */
+/* Intro Section */
 .intro,
 .footer {
   height: 100vh;
@@ -102,26 +86,27 @@ p {
 
 .intro__content {
   position: absolute;
-  right: 8%;
   bottom: 15%;
+  right: 8%;
   z-index: 3;
-}
-@media all and (max-width: 768px) {
-  .intro__content {
-    right: auto;
-  }
 }
 
 .intro__title {
   font-size: 25vw;
-  overflow: hidden;
   letter-spacing: -2.3vw;
   padding-right: 2.3vw;
+  overflow: hidden;
 }
-@media all and (max-width: 768px) {
-  .intro__title {
-    margin-bottom: 5vh;
-  }
+
+.intro__title span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(100%); /* Start position for animation */
+}
+
+.intro__txt {
+  max-width: 35vw;
+  margin-left: 25vw;
 }
 
 .intro__img {
@@ -129,229 +114,73 @@ p {
   width: 35%;
   max-width: 390px;
   height: auto;
-}
-@media all and (max-width: 768px) {
-  .intro__img {
-    width: 75vw;
-  }
+  bottom: 35%;
+  left: 10%;
 }
 
-.intro__img--1 {
-  z-index: 2;
-  left: 10%;
-  bottom: 35%;
-}
-@media all and (max-width: 768px) {
-  .intro__img--1 {
+@media (max-width: 768px) {
+  .intro__title {
+    margin-bottom: 5vh;
+  }
+  .intro__img {
+    width: 75vw;
     left: 50%;
     bottom: 50vh;
   }
-}
-
-.intro__img--2 {
-  z-index: 1;
-  left: 25%;
-  bottom: 40%;
-}
-@media all and (max-width: 768px) {
-  .intro__img--2 {
-    left: 70%;
-    bottom: 60vh;
-  }
-}
-
-.intro__txt {
-  max-width: 35vw;
-  margin-left: 25vw;
-}
-@media all and (max-width: 768px) {
   .intro__txt {
     max-width: 80vw;
     margin-left: 5vw;
   }
 }
 
-/*  ========================================================================== 
-    Slides
-    ========================================================================== */
+/* Slide Styling */
 .slide {
   display: flex;
   align-items: stretch;
   height: 100vh;
   overflow: hidden;
 }
+
 .slide:nth-of-type(even) {
   background: #C4CDC4;
 }
-@media all and (max-width: 768px) {
-  .slide {
-    display: block;
-    position: relative;
-  }
-}
 
-/*  Columns
-    ========================================================================== */
 .col {
-  flex-basis: 50%;
-}
-@media all and (max-width: 768px) {
-  .col {
-    display: block;
-    width: 100%;
-    height: 100vh;
-  }
-}
-
-.col--1 {
+  flex: 1;
   position: relative;
-  z-index: 1;
-}
-@media all and (max-width: 768px) {
-  .col--1 {
-    position: relative;
-    z-index: 1;
-  }
 }
 
-.col--2 {
-  position: relative;
-  overflow: hidden;
-}
-@media all and (max-width: 768px) {
-  .col--2 {
-    position: absolute;
-    z-index: 0;
-    left: 0;
-    top: 0;
-  }
-}
-
-/*  ========================================================================== 
-    Column Content
-    ========================================================================== */
 .col__content {
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  overflow: hidden;
   height: 100%;
-  padding: 6vw 6vw 10vw;
-}
-@media all and (max-width: 768px) {
-  .col__content {
-    width: 80%;
-  }
+  padding: 6vw;
 }
 
-.col__content--1 {
-  background: #D8C0C0;
-}
-@media all and (max-width: 768px) {
-  .col__content--1 {
-    background: rgba(216, 192, 192, 0.9);
-  }
-}
-
-.col__content--2 {
-  background: #CDD5E0;
-}
-@media all and (max-width: 768px) {
-  .col__content--2 {
-    background: rgba(205, 213, 224, 0.9);
-  }
-}
-
-.col__content--3 {
-  background: #F3D3B0;
-}
-@media all and (max-width: 768px) {
-  .col__content--3 {
-    background: rgba(243, 211, 176, 0.9);
-  }
-}
-
-.col__content--4 {
-  background: #F8E9E6;
-}
-@media all and (max-width: 768px) {
-  .col__content--4 {
-    background: rgba(248, 233, 230, 0.9);
-  }
-}
-
-.col__content--5 {
-  background: #D1E2EC;
-}
-@media all and (max-width: 768px) {
-  .col__content--5 {
-    background: rgba(209, 226, 236, 0.9);
-  }
-}
-
-.col__content--6 {
-  background: #D7CEC5;
-}
-@media all and (max-width: 768px) {
-  .col__content--6 {
-    background: rgba(215, 206, 197, 0.9);
-  }
-}
-
-/*  Column Content
-    ========================================================================== */
 .col__content-title {
-  margin: 0 0 2vw;
   font-size: 10vw;
   letter-spacing: -0.8vw;
-}
-@media all and (max-width: 768px) {
-  .col__content-title {
-    margin: 0 0 6vw;
-    font-size: 18vw;
-  }
+  overflow: hidden;
 }
 
-.col__content-wrap {
-  display: flex;
-  justify-content: flex-end;
-}
-@media all and (max-width: 768px) {
-  .col__content-wrap {
-    flex-direction: column;
-  }
+.col__content-title .line__inner {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(100%); /* Start position for animation */
 }
 
 .col__content-txt {
   max-width: 22vw;
-  order: 2;
   margin-left: 32px;
-}
-@media all and (max-width: 768px) {
-  .col__content-txt {
-    order: 1;
-    max-width: 40vw;
-    margin: 0 0 10vw 10vw;
-  }
 }
 
 .slide-link {
   position: relative;
-  order: 1;
   display: flex;
   justify-content: flex-end;
   width: 75px;
   height: 53px;
-}
-.slide-link > * {
-  pointer-events: none;
-}
-@media all and (max-width: 768px) {
-  .slide-link {
-    order: 2;
-    align-self: flex-end;
-  }
 }
 
 .slide-link__circ {
@@ -370,91 +199,7 @@ p {
   background: var(--dark);
 }
 
-.line {
-  overflow: hidden;
-}
-.line:nth-of-type(even) {
-  margin-top: -1vw;
-}
-
-.line__inner {
-  display: block;
-}
-
-.slide__scroll-link {
-  position: absolute;
-  right: -113px;
-  bottom: 3.5vw;
-  display: block;
-  width: 140px;
-  height: 140px;
-  background: var(--dark);
-  overflow: hidden;
-}
-@media all and (max-width: 768px) {
-  .slide__scroll-link {
-    display: none;
-  }
-}
-
-.slide__scroll-line {
-  position: absolute;
-  left: 26px;
-  bottom: 0;
-  width: 1px;
-  height: 100%;
-}
-
-.slide--0 .slide__scroll-line {
-  background: #C0D7D8;
-}
-
-.slide--1 .slide__scroll-line {
-  background: #D8C0C0;
-}
-
-.slide--2 .slide__scroll-line {
-  background: #CDD5E0;
-}
-
-.slide--3 .slide__scroll-line {
-  background: #F3D3B0;
-}
-
-.slide--4 .slide__scroll-line {
-  background: #F8E9E6;
-}
-
-.slide--5 .slide__scroll-line {
-  background: #D1E2EC;
-}
-
-.slide--6 .slide__scroll-line {
-  background: #D7CEC5;
-}
-
-/*  ========================================================================== 
-    Column Image
-    ========================================================================== */
-.col__image-wrap {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 100%;
-  height: 160vh;
-}
-
-.img {
-  -o-object-fit: cover;
-     object-fit: cover;
-  width: 100%;
-  height: 100%;
-}
-
-/*  ========================================================================== 
-    Footer
-    ========================================================================== */
+/* Footer Styling */
 .footer {
   display: flex;
   align-items: center;
@@ -467,7 +212,6 @@ p {
   font-size: 5vw;
   color: var(--dark);
   text-decoration: none;
-  font-family: "Cinzel", serif;
 }
 
 .footer__link-top {
@@ -484,7 +228,6 @@ p {
   font-size: 18px;
   color: white;
   text-decoration: none;
-  font-family: "Cinzel", serif;
 }
 
 .footer__link-top-line {
@@ -496,11 +239,26 @@ p {
   background: var(--dark);
 }
 
-.footer__copyright {
-  position: absolute;
-  left: 50%;
-  bottom: 24px;
-  transform: translateX(-50%);
+@media (max-width: 768px) {
+  .footer__link-top {
+    left: 50%;
+    bottom: 10px;
+  }
 }
 
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .col__content {
+    width: 80%;
+  }
+  .col__content-title {
+    margin-bottom: 6vw;
+    font-size: 18vw;
+  }
+  .col__content-txt {
+    max-width: 80vw;
+    margin: 0 0 10vw 10vw;
+  }
+}
 
+/* Additional Parallax and Animation Tweaks for GSAP */
