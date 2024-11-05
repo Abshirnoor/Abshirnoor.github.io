@@ -136,12 +136,12 @@ p {
 }
 
 .intro__title {
-  font-size: 15vw;
+  font-size: 5vw;
   overflow: hidden;
   letter-spacing: -2.3vw;
   padding-right: 2.3vw;
 }
-@media all and (max-width: 768px) {
+@media all and (max-width: 68px) {
   .intro__title {
     margin-bottom: 5vh;
   }
